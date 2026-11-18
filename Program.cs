@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Ejercicios_Delegados
 {
@@ -6,7 +7,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio9();
+            Ejercicio10();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -24,6 +25,24 @@ namespace Ejercicios_Delegados
                 if (!esValido)
                 {
                     Console.WriteLine("Entrada no válida. Introduce un número entero.");
+                }
+            } while (!esValido);
+            return numero;
+        }
+
+        // Pide un número con decimales y repite hasta que sea válido
+        static double LeerDecimal(string mensaje)
+        {
+            double numero;
+            bool esValido;
+            do
+            {
+                Console.Write(mensaje);
+                // NumberStyles.Float evita que el punto se lea como separador de miles
+                esValido = double.TryParse(Console.ReadLine(), NumberStyles.Float, CultureInfo.CurrentCulture, out numero);
+                if (!esValido)
+                {
+                    Console.WriteLine("Entrada no válida. Introduce un número (con coma para los decimales).");
                 }
             } while (!esValido);
             return numero;
@@ -249,6 +268,50 @@ namespace Ejercicios_Delegados
             Console.WriteLine($"Suma: {EjecutarOperacion(Suma, 8, 3)}");
             Console.WriteLine($"Resta: {EjecutarOperacion(Resta, 8, 3)}");
             Console.WriteLine($"Multiplicar: {EjecutarOperacion(Multiplicar, 8, 3)}");
+        }
+
+        delegate double Calculo(double numero);
+
+        static double RaizCuadrada(double numero)
+        {
+            // Math.Sqrt no lanza excepción con negativos, así que la lanzamos nosotros
+            if (numero < 0)
+            {
+                throw new ArgumentException("No existe la raíz cuadrada de un número negativo.");
+            }
+            return Math.Sqrt(numero);
+        }
+
+        static double Logaritmo(double numero)
+        {
+            if (numero <= 0)
+            {
+                throw new ArgumentException("El logaritmo solo existe para números mayores que 0.");
+            }
+            return Math.Log(numero);
+        }
+
+        // Ejecuta el cálculo y controla los errores
+        static void EjecutarCalculo(Calculo calculo, double numero)
+        {
+            try
+            {
+                double resultado = calculo(numero);
+                Console.WriteLine($"{calculo.Method.Name}({numero}) = {resultado}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en {calculo.Method.Name}: {ex.Message}");
+            }
+        }
+
+        // Ejercicio 10: delegados y errores
+        static void Ejercicio10()
+        {
+            double numero = LeerDecimal("Introduce un número: ");
+
+            EjecutarCalculo(RaizCuadrada, numero);
+            EjecutarCalculo(Logaritmo, numero);
         }
     }
 }
