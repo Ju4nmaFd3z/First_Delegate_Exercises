@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio5();
+            Ejercicio6();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -129,6 +129,38 @@ namespace Ejercicios_Delegados
             MostrarResultado(Sumar, 8, 3);
             MostrarResultado(Restar, 8, 3);
             MostrarResultado(Multiplicar, 8, 3);
+        }
+
+        // Delegado nuevo para este ejercicio
+        delegate int Operar(int x, int y);
+
+        static int Suma(int a, int b)
+        {
+            return a + b;
+        }
+
+        static int Resta(int a, int b)
+        {
+            return a - b;
+        }
+
+        static int Multiplicacion(int a, int b)
+        {
+            return a * b;
+        }
+
+        // Ejercicio 6: nombre del método y resultado
+        static void Ejercicio6()
+        {
+            Operar operaciones = Suma;
+            operaciones += Resta;
+            operaciones += Multiplicacion;
+
+            foreach (Operar operacion in operaciones.GetInvocationList())
+            {
+                // Method.Name nos da el nombre del método
+                Console.WriteLine($"{operacion.Method.Name}: {operacion(8, 3)}");
+            }
         }
     }
 }
