@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio7();
+            Ejercicio8();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -198,6 +198,39 @@ namespace Ejercicios_Delegados
             foreach (OperarArray operacion in operaciones.GetInvocationList())
             {
                 Console.WriteLine($"{operacion.Method.Name}: {operacion(numeros)}");
+            }
+        }
+
+        // Delegado con un solo entero
+        delegate int Transformar(int x);
+
+        static int Doblar(int x)
+        {
+            return x * 2;
+        }
+
+        static int Triplicar(int x)
+        {
+            return x * 3;
+        }
+
+        static int Cuadrado(int x)
+        {
+            return x * x;
+        }
+
+        // Ejercicio 8: transformar un número
+        static void Ejercicio8()
+        {
+            int numero = LeerEntero("Introduce un número: ");
+
+            Transformar transformaciones = Doblar;
+            transformaciones += Triplicar;
+            transformaciones += Cuadrado;
+
+            foreach (Transformar transformacion in transformaciones.GetInvocationList())
+            {
+                Console.WriteLine($"{transformacion.Method.Name}({numero}) = {transformacion(numero)}");
             }
         }
     }
