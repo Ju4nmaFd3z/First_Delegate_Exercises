@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio1();
+            Ejercicio2();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -28,6 +28,22 @@ namespace Ejercicios_Delegados
 
             int resultado = operacion(8, 3);
             Console.WriteLine($"Sumar: {resultado}");
+        }
+
+        static int Restar(int a, int b)
+        {
+            return a - b;
+        }
+
+        // Ejercicio 2: asignar varios métodos al mismo delegado, uno cada vez
+        static void Ejercicio2()
+        {
+            Operacion operacion = Sumar;
+            Console.WriteLine($"Sumar: {operacion(8, 3)}");
+
+            // Cambiamos el método al que apunta el delegado
+            operacion = Restar;
+            Console.WriteLine($"Restar: {operacion(8, 3)}");
         }
     }
 }
