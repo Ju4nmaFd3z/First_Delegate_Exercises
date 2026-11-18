@@ -6,10 +6,27 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio3();
+            Ejercicio4();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
+        }
+
+        // Pide un entero y repite hasta que sea válido
+        static int LeerEntero(string mensaje)
+        {
+            int numero;
+            bool esValido;
+            do
+            {
+                Console.Write(mensaje);
+                esValido = int.TryParse(Console.ReadLine(), out numero);
+                if (!esValido)
+                {
+                    Console.WriteLine("Entrada no válida. Introduce un número entero.");
+                }
+            } while (!esValido);
+            return numero;
         }
 
         // Delegado: apunta a métodos con dos enteros que devuelven un entero
@@ -64,6 +81,38 @@ namespace Ejercicios_Delegados
             foreach (Operacion operacion in operaciones.GetInvocationList())
             {
                 Console.WriteLine($"{operacion.Method.Name}: {operacion(8, 3)}");
+            }
+        }
+
+        static int Dividir(int a, int b)
+        {
+            // Si b vale 0, C# lanza una DivideByZeroException
+            return a / b;
+        }
+
+        // Ejercicio 4: división por cero
+        static void Ejercicio4()
+        {
+            int numero1 = LeerEntero("Introduce el primer número: ");
+            int numero2 = LeerEntero("Introduce el segundo número: ");
+
+            Operacion operaciones = Sumar;
+            operaciones += Restar;
+            operaciones += Multiplicar;
+            operaciones += Dividir;
+
+            foreach (Operacion operacion in operaciones.GetInvocationList())
+            {
+                // Probamos cada método por separado por si alguno falla
+                try
+                {
+                    int resultado = operacion(numero1, numero2);
+                    Console.WriteLine($"{operacion.Method.Name}: {resultado}");
+                }
+                catch (DivideByZeroException)
+                {
+                    Console.WriteLine($"{operacion.Method.Name}: no se puede dividir entre cero");
+                }
             }
         }
     }
