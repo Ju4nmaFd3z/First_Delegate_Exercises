@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio8();
+            Ejercicio9();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -232,6 +232,23 @@ namespace Ejercicios_Delegados
             {
                 Console.WriteLine($"{transformacion.Method.Name}({numero}) = {transformacion(numero)}");
             }
+        }
+
+        delegate int OperacionCallback(int x, int y);
+
+        // Ejecuta el método que le pasamos y devuelve el resultado
+        static int EjecutarOperacion(OperacionCallback operacion, int x, int y)
+        {
+            return operacion(x, y);
+        }
+
+        // Ejercicio 9: callback
+        static void Ejercicio9()
+        {
+            // Reutilizamos Suma, Resta y Multiplicar, que ya tienen la firma correcta
+            Console.WriteLine($"Suma: {EjecutarOperacion(Suma, 8, 3)}");
+            Console.WriteLine($"Resta: {EjecutarOperacion(Resta, 8, 3)}");
+            Console.WriteLine($"Multiplicar: {EjecutarOperacion(Multiplicar, 8, 3)}");
         }
     }
 }
