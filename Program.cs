@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio4();
+            Ejercicio5();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -114,6 +114,21 @@ namespace Ejercicios_Delegados
                     Console.WriteLine($"{operacion.Method.Name}: no se puede dividir entre cero");
                 }
             }
+        }
+
+        // Recibe un delegado y dos enteros, llama al delegado y muestra el resultado
+        static void MostrarResultado(Operacion operacion, int x, int y)
+        {
+            int resultado = operacion(x, y);
+            Console.WriteLine($"{operacion.Method.Name}({x}, {y}) = {resultado}");
+        }
+
+        // Ejercicio 5: pasar un delegado como parámetro
+        static void Ejercicio5()
+        {
+            MostrarResultado(Sumar, 8, 3);
+            MostrarResultado(Restar, 8, 3);
+            MostrarResultado(Multiplicar, 8, 3);
         }
     }
 }
