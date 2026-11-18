@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio6();
+            Ejercicio7();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -160,6 +160,44 @@ namespace Ejercicios_Delegados
             {
                 // Method.Name nos da el nombre del método
                 Console.WriteLine($"{operacion.Method.Name}: {operacion(8, 3)}");
+            }
+        }
+
+        // Delegado que recibe un array de enteros
+        delegate int OperarArray(int[] numeros);
+
+        static int SumaArray(int[] numeros)
+        {
+            int suma = 0;
+            foreach (int numero in numeros)
+            {
+                suma += numero;
+            }
+            return suma;
+        }
+
+        static int MultiplicacionArray(int[] numeros)
+        {
+            // Empezamos en 1 porque multiplicar por 0 lo anularía todo
+            int producto = 1;
+            foreach (int numero in numeros)
+            {
+                producto *= numero;
+            }
+            return producto;
+        }
+
+        // Ejercicio 7: delegados con arrays
+        static void Ejercicio7()
+        {
+            int[] numeros = { 2, 3, 4, 5 };
+
+            OperarArray operaciones = SumaArray;
+            operaciones += MultiplicacionArray;
+
+            foreach (OperarArray operacion in operaciones.GetInvocationList())
+            {
+                Console.WriteLine($"{operacion.Method.Name}: {operacion(numeros)}");
             }
         }
     }
