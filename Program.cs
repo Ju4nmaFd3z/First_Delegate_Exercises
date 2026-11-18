@@ -6,7 +6,7 @@ namespace Ejercicios_Delegados
     {
         static void Main(string[] args)
         {
-            Ejercicio2();
+            Ejercicio3();
 
             Console.WriteLine("Pulsa una tecla para salir...");
             Console.ReadKey();
@@ -44,6 +44,27 @@ namespace Ejercicios_Delegados
             // Cambiamos el método al que apunta el delegado
             operacion = Restar;
             Console.WriteLine($"Restar: {operacion(8, 3)}");
+        }
+
+        static int Multiplicar(int a, int b)
+        {
+            return a * b;
+        }
+
+        // Ejercicio 3: delegado multicast
+        static void Ejercicio3()
+        {
+            // Con += añadimos más métodos al mismo delegado
+            Operacion operaciones = Sumar;
+            operaciones += Restar;
+            operaciones += Multiplicar;
+
+            // Si lo llamamos directamente solo veríamos el último resultado,
+            // así que recorremos la lista de métodos uno a uno
+            foreach (Operacion operacion in operaciones.GetInvocationList())
+            {
+                Console.WriteLine($"{operacion.Method.Name}: {operacion(8, 3)}");
+            }
         }
     }
 }
